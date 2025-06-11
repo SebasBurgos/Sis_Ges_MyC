@@ -1,0 +1,1 @@
+// Contenido inicial para app.js 
