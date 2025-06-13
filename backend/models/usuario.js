@@ -1,19 +1,48 @@
 // Contenido inicial para usuario.js 
-const { mysqlPool } = require('../config/db');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
+const bcrypt = require('bcryptjs'); // Importar bcryptjs
 
-class Usuario {
-    static async crear(nombre, email) {
-        const [result] = await mysqlPool.query(
-            'INSERT INTO usuarios (nombre, email) VALUES (?, ?)',
-            [nombre, email]
-        );
-        return result.insertId;
-    }
+const Cliente = sequelize.define('Cliente', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  nombre: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  correo: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  telefono: {
+    type: DataTypes.STRING,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  rol: {
+    type: DataTypes.STRING,
+    defaultValue: 'cliente', // Rol por defecto
+  },
+}, {
+  tableName: 'clientes', // Nombre de la tabla en la base de datos
+  timestamps: false, // Si no quieres que Sequelize añada createdAt y updatedAt
+  hooks: {
+    beforeCreate: async (cliente) => {
+      const salt = await bcrypt.genSalt(10);
+      cliente.password = await bcrypt.hash(cliente.password, salt);
+    },
+  },
+});
 
-    static async obtenerTodos() {
-        const [rows] = await mysqlPool.query('SELECT * FROM usuarios');
-        return rows;
-    }
-}
+// Método para comparar contraseñas
+Cliente.prototype.validPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
-module.exports = Usuario;
+module.exports = Cliente;
