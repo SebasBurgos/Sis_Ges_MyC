@@ -20,6 +20,11 @@ const resenaSchema = new mongoose.Schema({
     required: false,
     default: null,
   },
+  tipo_visita: {
+    type: String,
+    required: false,
+    trim: true,
+  },
   fecha: {
     type: Date,
     default: Date.now,

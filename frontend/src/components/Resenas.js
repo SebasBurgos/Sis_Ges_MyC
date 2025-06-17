@@ -13,18 +13,23 @@ function Resenas({ user }) {
     plato_id: '',
     valoracion: 5, 
     comentario: '',
+    tipo_visita: '',
   });
 
   const [filterValoracion, setFilterValoracion] = useState('');
   const [filterClienteNombre, setFilterClienteNombre] = useState('');
   const [filterPlatoNombre, setFilterPlatoNombre] = useState('');
   const [filterFecha, setFilterFecha] = useState('');
+  const [filterTipoVisita, setFilterTipoVisita] = useState('');
 
   const fetchResenas = async (filters = {}) => {
     const queryParams = new URLSearchParams();
+
+    // Si el usuario es un cliente, filtrar por su propio ID
     if (user && user.rol === 'cliente') {
       queryParams.append('cliente_id', user.id);
     }
+    // Para admin/mesero, usar los filtros
     if (filters.cliente_nombre) {
       queryParams.append('cliente_nombre', filters.cliente_nombre);
     }
@@ -32,10 +37,13 @@ function Resenas({ user }) {
       queryParams.append('plato_nombre', filters.plato_nombre);
     }
     if (filters.valoracion) {
-      queryParams.append('calificacion', filters.valoracion);
+      queryParams.append('calificacion', filters.valoracion); 
     }
     if (filters.fecha) {
       queryParams.append('fecha', filters.fecha);
+    }
+    if (filters.tipo_visita) {
+      queryParams.append('tipo_visita', filters.tipo_visita);
     }
     const url = `http://localhost:3000/api/resenas?${queryParams.toString()}`;
     try {
@@ -43,6 +51,7 @@ function Resenas({ user }) {
       if (response.status !== 200) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      // console.log("Datos crudos de reseñas del backend:", response.data);
       return response.data;
     } catch (error) {
       console.error('Error al obtener las reseñas:', error);
@@ -92,6 +101,7 @@ function Resenas({ user }) {
             plato_nombre: filterPlatoNombre,
             valoracion: filterValoracion,
             fecha: filterFecha,
+            tipo_visita: filterTipoVisita,
           }),
           fetchClientes(),
           fetchPlatos(),
@@ -108,13 +118,13 @@ function Resenas({ user }) {
     };
 
     loadData();
-  }, [user, filterClienteNombre, filterPlatoNombre, filterValoracion, filterFecha]);
+  }, [user, filterClienteNombre, filterPlatoNombre, filterValoracion, filterFecha, filterTipoVisita]);
 
   const handleResenaChange = (e) => {
     const { name, value } = e.target;
     setNewResena((prevResena) => ({
       ...prevResena,
-      [name]: name === 'valoracion' ? parseInt(value) : value,
+      [name]: name === 'valoracion' || (name === 'plato_id' && value !== '') ? parseInt(value) : value,
     }));
   };
 
@@ -128,17 +138,20 @@ function Resenas({ user }) {
       setFilterPlatoNombre(value);
     } else if (name === 'filterFecha') {
       setFilterFecha(value);
+    } else if (name === 'filterTipoVisita') {
+      setFilterTipoVisita(value);
     }
   };
 
   const handleFilterSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading(true); 
     fetchResenas({
       cliente_nombre: filterClienteNombre,
       plato_nombre: filterPlatoNombre,
       valoracion: filterValoracion,
       fecha: filterFecha,
+      tipo_visita: filterTipoVisita,
     })
       .then(data => {
         setResenas(data);
@@ -160,14 +173,19 @@ function Resenas({ user }) {
       if (user && user.rol === 'cliente') {
         resenaData.cliente_id = user.id; // Asegurar que la reseña se asocie al cliente logueado
       }
-      console.log("Datos de la reseña a enviar:", resenaData);
 
       const response = await axios.post('http://localhost:3000/api/resenas', resenaData);
-      if (response.status !== 201) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      setNewResena({ cliente_id: user ? user.id : '', plato_id: '', valoracion: 5, comentario: '' }); // Resetear con el cliente actual
-      fetchResenas({ valoracion: filterValoracion, plato_id: filterPlatoNombre }).then(setResenas);
+      setNewResena({ cliente_id: user ? user.id : '', plato_id: '', valoracion: 5, comentario: '', tipo_visita: '' }); // Resetear con el cliente actual
+      fetchResenas({
+        cliente_nombre: filterClienteNombre,
+        plato_nombre: filterPlatoNombre,
+        valoracion: filterValoracion,
+        fecha: filterFecha,
+        tipo_visita: filterTipoVisita,
+      }).then(setResenas);
       alert('Reseña registrada con éxito!');
     } catch (err) {
       setError(err.message);
@@ -204,46 +222,63 @@ function Resenas({ user }) {
     <div className="content-container">
       {user && user.rol === 'cliente' && (
         <>
-          <h1>Registrar Nueva Reseña</h1>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="plato_id">Plato (opcional):</label>
-              <select
-                id="plato_id"
-                name="plato_id"
-                value={newResena.plato_id}
-                onChange={handleResenaChange}
-              >
+      <h1>Registrar Nueva Reseña</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="plato_id">Plato (opcional):</label>
+          <select
+            id="plato_id"
+            name="plato_id"
+            value={newResena.plato_id}
+            onChange={handleResenaChange}
+          >
                 <option key="general-review" value="">General (reseña general)</option>
-                {platos.map((plato) => (
+            {platos.map((plato) => (
                   <option key={plato.id} value={plato.id}>{plato.nombre}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="valoracion">Valoración:</label>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="valoracion">Valoración:</label>
               <select
-                id="valoracion"
-                name="valoracion"
-                value={newResena.valoracion}
-                onChange={handleResenaChange}
+            id="valoracion"
+            name="valoracion"
+            value={newResena.valoracion}
+            onChange={handleResenaChange}
               >
                 {[5,4,3,2,1].map((val) => (
                   <option key={val} value={val}>{val}</option>
                 ))}
               </select>
-            </div>
-            <div>
-              <label htmlFor="comentario">Comentario (opcional):</label>
-              <textarea
-                id="comentario"
-                name="comentario"
-                value={newResena.comentario}
-                onChange={handleResenaChange}
+        </div>
+        <div>
+          <label htmlFor="tipo_visita">Tipo de Visita (opcional):</label>
+          <select
+            id="tipo_visita"
+            name="tipo_visita"
+            value={newResena.tipo_visita}
+            onChange={handleResenaChange}
+          >
+            <option key="empty-tipo" value="">Seleccionar</option>
+            <option key="familiar" value="familiar">Familiar</option>
+            <option key="negocios" value="negocios">Negocios</option>
+            <option key="amigos" value="amigos">Amigos</option>
+            <option key="pareja" value="pareja">Pareja</option>
+            <option key="solo" value="solo">Solo</option>
+            <option key="otro" value="otro">Otro</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="comentario">Comentario (opcional):</label>
+          <textarea
+            id="comentario"
+            name="comentario"
+            value={newResena.comentario}
+            onChange={handleResenaChange}
               />
-            </div>
-            <button type="submit">Registrar Reseña</button>
-          </form>
+        </div>
+        <button type="submit">Registrar Reseña</button>
+      </form>
         </>
       )}
 
@@ -299,6 +334,19 @@ function Resenas({ user }) {
             <option value="2">2 Estrellas</option>
             <option value="1">1 Estrella</option>
           </select>
+          <select
+            name="filterTipoVisita"
+            value={filterTipoVisita}
+            onChange={handleFilterChange}
+          >
+            <option key="all-tipos" value="">Todos los tipos de visita</option>
+            <option value="familiar">Familiar</option>
+            <option value="negocios">Negocios</option>
+            <option value="amigos">Amigos</option>
+            <option value="pareja">Pareja</option>
+            <option value="solo">Solo</option>
+            <option value="otro">Otro</option>
+          </select>
           <button type="submit">Buscar</button>
         </form>
       )}
@@ -313,6 +361,7 @@ function Resenas({ user }) {
                 <th>Cliente</th>
                 <th>Plato</th>
                 <th>Valoración</th>
+                <th>Tipo de Visita</th>
                 <th>Comentario</th>
                 <th>Fecha</th>
               </tr>
@@ -320,20 +369,19 @@ function Resenas({ user }) {
             <tbody>
               {resenas.map((resena) => {
                 return (
-                  <tr key={resena.id}>
-                    <td>{getClienteNombre(resena.cliente_id)}</td>
+                <tr key={resena.id}>
+                  <td>{getClienteNombre(resena.cliente_id)}</td>
                     <td>
                       {(() => {
-                        console.log("Resena plato_id:", resena.plato_id);
-                        console.log("Platos cargados:", platos);
                         const platoEncontrado = platos.find(p => p.id === resena.plato_id);
                         return platoEncontrado ? platoEncontrado.nombre : 'General';
                       })()}
                     </td>
-                    <td>{resena.valoracion} Estrellas</td>
-                    <td>{resena.comentario || 'N/A'}</td>
+                  <td>{resena.valoracion} Estrellas</td>
+                  <td>{resena.tipo_visita || 'N/A'}</td>
+                  <td>{resena.comentario || 'N/A'}</td>
                     <td>{new Date(resena.fecha).toLocaleDateString()}</td>
-                  </tr>
+                </tr>
                 );
               })}
             </tbody>
