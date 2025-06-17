@@ -1,0 +1,494 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #282c34;
+  color: white;
+  line-height: 1.6;
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+h1 {
+  color: #61dafb;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos para los botones de navegación */
+nav {
+  margin-bottom: 40px;
+  display: flex;
+  gap: 15px; /* Espacio entre los botones */
+}
+
+nav button {
+  background-color: #4a4f59;
+  color: #61dafb;
+  padding: 12px 25px;
+  border: 1px solid #61dafb;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav button:hover {
+  background-color: #61dafb;
+  color: #282c34;
+  border-color: #45b7d8;
+  transform: translateY(-2px);
+}
+
+nav button:active {
+  transform: translateY(1px);
+}
+
+/* Contenedor general para formularios y listas */
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.content-container h1 {
+  margin-top: 0;
+  margin-bottom: 30px; /* Asegurar margen inferior para el título dentro del contenedor */
+}
+
+/* Estilos para formularios (aplicados a todos los formularios dentro de .content-container) */
+.content-container form {
+  background-color: #3a3f4a;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.content-container form div {
+  margin-bottom: 18px; /* Aumentar el espacio entre los campos */
+}
+
+.content-container form label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1em; /* Aumentar un poco el tamaño de la etiqueta */
+  color: #bbbbbb;
+  font-weight: bold;
+}
+
+.content-container form input[type="text"],
+.content-container form input[type="email"],
+.content-container form input[type="number"],
+.content-container form input[type="date"],
+.content-container form input[type="time"],
+.content-container form input[type="password"],
+.content-container form select {
+  width: calc(100% - 20px);
+  padding: 14px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #4a4f59;
+  color: white;
+  font-size: 1.2em;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%23FFFFFF" opacity="0.6"><path d="M7 2h10c1.1 0 2 .9 2 2v2h-14v-2c0-1.1.9-2 2-2zM5 8v12c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-12h-14zM19 4h-2V2h-2v2h-4V2h-2v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-3 12h-2v-2h2v2zm0-4h-2V10h2v2zm-4 4h-2v-2h2v2zm0-4h-2V10h2v2zm-4 4h-2v-2h2v2z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  padding-right: 40px;
+}
+
+.content-container form input[type="text"]:focus,
+.content-container form input[type="email"]:focus,
+.content-container form input[type="number"]:focus,
+.content-container form input[type="date"]:focus,
+.content-container form input[type="time"]:focus,
+.content-container form select:focus {
+  outline: none;
+  border-color: #61dafb;
+  box-shadow: 0 0 0 4px rgba(97, 218, 251, 0.4);
+}
+
+.content-container form input[type="text"]:focus,
+.content-container form input[type="email"]:focus,
+.content-container form input[type="number"]:focus {
+  outline: none;
+  border-color: #61dafb;
+  box-shadow: 0 0 0 4px rgba(97, 218, 251, 0.4); /* Aumentar el brillo del focus */
+}
+
+.content-container form button {
+  background-color: #61dafb;
+  color: #282c34;
+  padding: 14px 28px; /* Aumentar el padding del botón */
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em; /* Aumentar el tamaño de fuente del botón */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  margin-top: 25px; /* Aumentar el margen superior del botón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.content-container form button:hover {
+  background-color: #45b7d8;
+  transform: translateY(-2px);
+}
+
+.content-container form button:active {
+  transform: translateY(1px);
+}
+
+/* Estilos para listas (aplicados a todas las listas dentro de .content-container) */
+ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+.content-container ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+.content-container li {
+  background-color: #3a3f4a;
+  margin-bottom: 12px; /* Aumentar el espacio entre elementos de la lista */
+  padding: 18px 25px; /* Aumentar el padding de los elementos de la lista */
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.content-container li:hover {
+  transform: translateY(-3px);
+  background-color: #4a4f59; /* Ligeramente más claro al pasar el ratón */
+}
+
+.content-container li strong {
+  color: #61dafb;
+  font-size: 1.3em; /* Aumentar el tamaño de fuente del nombre */
+  margin-bottom: 6px;
+}
+
+.content-container li span { /* Para otros detalles en la lista si los agregamos */
+  color: #bbbbbb;
+  font-size: 0.95em;
+}
+
+/* Nuevos estilos para la cuadrícula de platos */
+.platos-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 4 columnas responsivas */
+  gap: 20px; /* Aumentar significativamente el espacio entre las tarjetas de platos */
+  width: 100%;
+  max-width: 1290px; /* Ancho máximo para la cuadrícula */
+  margin-top: 20px;
+}
+
+.plato-card {
+  background-color: #3a3f4a;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.2s ease;
+  height: 100%;
+  box-sizing: border-box; /* Asegurar que padding y border se incluyan en el tamaño total */
+}
+
+.plato-card:hover {
+  transform: translateY(-5px); /* Efecto hover */
+}
+
+.plato-card strong {
+  color: #61dafb;
+  font-size: 1.4em;
+  margin-bottom: 12px; /* Ajustar el margen inferior para el nombre */
+}
+
+.plato-card span {
+  color: #bbbbbb;
+  font-size: 0.95em;
+  margin-bottom: 10px; /* Ajustar el margen inferior para los spans */
+}
+
+.plato-card br {
+  display: none; /* Ocultar los <br> que insertamos en JSX, para que el layout sea con flexbox */
+}
+
+.plato-card span:last-of-type {
+  margin-top: auto; /* Empuja el estado disponible al final de la tarjeta */
+}
+
+.plato-card-actions {
+  display: flex;
+  gap: 10px; /* Espacio entre los botones de acción */
+  margin-top: auto; /* Empuja los botones al final de la tarjeta */
+  width: 100%;
+  justify-content: center; /* Centrar los botones */
+  padding-top: 15px; /* Espacio superior para separar del contenido */
+}
+
+.plato-card-actions button {
+  background-color: #61dafb;
+  color: #282c34;
+  padding: 8px 12px; /* Ajustar el padding */
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8em; /* Reducir el tamaño de fuente */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  flex-grow: 1;
+  max-width: 150px;
+}
+
+.plato-card-actions button:hover {
+  background-color: #45b7d8;
+  transform: translateY(-2px);
+}
+
+.plato-card-actions button:active {
+  transform: translateY(1px);
+}
+
+/* Estilos para tablas */
+.content-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #3a3f4a; /* Color de fondo de la tabla */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow: hidden; /* Asegura que los bordes redondeados se apliquen bien */
+}
+
+.content-container th,
+.content-container td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #555;
+  color: #f0f0f0;
+}
+
+.content-container th {
+  background-color: #2e3238; /* Color de fondo para los encabezados */
+  color: #61dafb;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.content-container tbody tr:nth-child(even) {
+  background-color: #333842; /* Color para filas pares */
+}
+
+.content-container tbody tr:hover {
+  background-color: #4a4f59; /* Color al pasar el ratón */
+  cursor: pointer;
+}
+
+.content-container .table-responsive {
+  overflow-x: auto;
+}
+
+hr {
+  border: 0;
+  height: 2px; /* Un poco más grueso */
+  background-image: linear-gradient(to right, rgba(97, 218, 251, 0), rgba(97, 218, 251, 0.75), rgba(97, 218, 251, 0));
+  margin: 50px 0; /* Aumentar el margen de la línea divisoria */
+  width: 90%; /* Hacerla un poco más ancha */
+}
+
+p {
+  color: #bbbbbb;
+  font-size: 1.1em;
+}
+
+/* Estilos específicos para Mesas si se necesitan overrides */
+/* .Mesas h1 {
+  color: #f0f0f0;
+} */
+
+/* For the time input specifically, to add a clock icon */
+.content-container form input[type="time"] {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%23FFFFFF" opacity="0.6"><path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zM11 8h2v1h-2zM11 11h2v3h-2z"/></svg>');
+}
+
+textarea {
+  width: 100%; /* Asegura que el textarea ocupe el 100% del ancho de su contenedor */
+  padding: 14px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #4a4f59;
+  color: white;
+  font-size: 1.2em;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #61dafb;
+  box-shadow: 0 0 0 4px rgba(97, 218, 251, 0.4);
+}
+
+/* Estilos para el contenedor de añadir plato */
+.add-plato-controls {
+  display: flex;
+  flex-direction: column; /* Apilar verticalmente los grupos */
+  gap: 20px; /* Espacio entre los grupos de campos */
+  width: 100%;
+  max-width: 500px; /* Asegurar que ocupe el mismo ancho que el formulario */
+  margin-bottom: 20px;
+}
+
+.add-plato-controls .plato-cantidad-group {
+  display: flex;
+  flex-direction: row; /* Mantener Plato y Cantidad en la misma fila */
+  gap: 15px;
+  width: 100%;
+  align-items: flex-end; /* Alinear en la parte inferior */
+}
+
+.add-plato-controls .plato-cantidad-group > div {
+  flex-grow: 1; /* Permitir que los divs dentro crezcan */
+}
+
+/* Estilos para el contenedor de observaciones y botón de añadir plato */
+.plato-observaciones-actions {
+  display: flex;
+  flex-direction: column; /* Apilar verticalmente */
+  align-items: flex-start; /* Alinear los elementos al inicio */
+  gap: 10px; /* Espacio entre el campo y el botón */
+  width: 100%; /* Asegurar que ocupe todo el ancho disponible */
+}
+
+.plato-observaciones-actions label {
+  margin-bottom: 8px; /* Espacio entre la etiqueta y el textarea */
+}
+
+.plato-observaciones-actions textarea {
+  width: 100%; /* Ocupa todo el ancho disponible en su contenedor */
+  min-height: 80px; /* Aumentar la altura mínima del textarea */
+  padding: 12px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #4a4f59;
+  color: white;
+  font-size: 1.1em;
+  box-sizing: border-box;
+  resize: vertical; /* Permitir redimensionar verticalmente */
+}
+
+.plato-observaciones-actions .add-plato-button {
+  width: 100%; /* Hacer que el botón ocupe todo el ancho disponible */
+  padding: 12px 20px; /* Ajustar padding para que se vea bien */
+  font-size: 1em; /* Ajustar tamaño de fuente */
+  margin-top: 5px; /* Pequeño margen superior para separar del textarea */
+}
+
+/* Estilos para la sección de búsqueda */
+.search-controls {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 800px; /* Ajustar el ancho máximo para la sección de búsqueda */
+  flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas pequeñas */
+  justify-content: center; /* Centrar los elementos de búsqueda */
+}
+
+.search-controls input[type="text"],
+.search-controls input[type="date"],
+.search-controls select {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #4a4f59;
+  color: white;
+  font-size: 1.1em; /* Aumentar el tamaño de fuente para los campos de búsqueda */
+  box-sizing: border-box;
+}
+
+.search-controls button {
+  padding: 10px 20px;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em; /* Tamaño de fuente para el botón de búsqueda */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-controls button:hover {
+  background-color: #45b7d8;
+}
