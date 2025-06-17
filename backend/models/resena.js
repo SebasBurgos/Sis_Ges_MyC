@@ -15,6 +15,11 @@ const resenaSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  plato_id: {
+    type: Number,
+    required: false,
+    default: null,
+  },
   fecha: {
     type: Date,
     default: Date.now,
